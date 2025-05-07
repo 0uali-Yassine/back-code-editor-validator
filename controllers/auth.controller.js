@@ -7,22 +7,22 @@ const bcrypt = require('bcryptjs');
 const signUp = async (req, res) => {
     try {
       const { name, email, password } = req.body;
+
       if(!name || !email || !password){
-          res.status(400).json({message:"Please remplair All the fields"});
-  
+          return res.status(400).json({message:"Please remplair All the fields"});
+
       }
+      const isExist = await User.findOne({ email });
+      if (isExist) return res.status(401).json({ message: 'User Already Exist!' });
+
       const hashed = await bcrypt.hash(password, 10);
       const user = new User({ name, email, password: hashed });
-      await user.save();
-      const token = jwt.sign(
-            { userId: user._id }, 
-            '134559038',
-            { expiresIn: '24h' }
-        );
-      res.json({ token,user });
+      const userData = await user.save();
+
+      return res.status(200).json({status : true ,data :  userData});
       
     } catch (error) {
-      console.log(message.error);
+      res.status(500);
     }
 
 }
