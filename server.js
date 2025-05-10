@@ -33,23 +33,14 @@ mongoose.connect('mongodb+srv://codecraftcademy:H7AtpHV67J2puxWq@code-editor-val
 const authRoutes = require('./routes/auth.routes');
 const saveCodeRoutes = require('./routes/save-code.routes');
 const studentCodeRoutes = require('./routes/student-code.routes');
+const studentCourseRoutes = require('./routes/student-course.routes');
 
 app.use('/api',authRoutes);
 
-// profile
+// student-course
+app.use('/api/course',studentCourseRoutes);
 
-app.get('/api/course/student',async (req, res) => {
-    try {
-      const user = await User.findById(req.user.userId).select('-password');
-      res.status(200).json({user});
-
-    } catch (error) {
-      res.status(500).json({ 
-        message: 'Error fetching profile', 
-        error: error.message 
-      });
-    }
-});
+//get all page,sections,thier code
 
 
 // just create page 
