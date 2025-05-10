@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 // module
 const User = require('./models/user.model');
 const Code = require('./models/code.model');
+const Page = require('./models/page.model');
 
 // middleware auth
 
@@ -34,6 +35,41 @@ const studentCodeRoutes = require('./routes/student-code.routes');
 
 app.use('/api',authRoutes);
 
+// profile
+
+app.get('/api/course/student',async (req, res) => {
+    try {
+      const user = await User.findById(req.user.userId).select('-password');
+      res.status(200).json({user});
+
+    } catch (error) {
+      res.status(500).json({ 
+        message: 'Error fetching profile', 
+        error: error.message 
+      });
+    }
+});
+
+
+// just create page 
+// app.post('/api/page',async (req, res) => {
+//     try {
+//       const { title} = req.body;
+  
+//       const page = new Page({
+//         title,
+//       });
+  
+//       const createdPage = await page.save();
+  
+//       res.status(201).json(createdPage);
+//     } catch (error) {
+//       res.status(500).json({ 
+//         message: 'Error creating page', 
+//         error: error.message 
+//       });
+//     }
+// });
 
 app.use('/api',saveCodeRoutes);
 app.use('/api',studentCodeRoutes);
