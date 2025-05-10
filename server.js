@@ -11,6 +11,7 @@ const bcrypt = require('bcryptjs');
 const User = require('./models/user.model');
 const Code = require('./models/code.model');
 const Page = require('./models/page.model');
+const Section = require('./models/section.model');
 
 // middleware auth
 
@@ -70,6 +71,39 @@ app.get('/api/course/student',async (req, res) => {
 //       });
 //     }
 // });
+
+// just create section 
+
+// app.post('/api/section',async (req, res) => {
+//     try {
+//       const { pageId, title, description, type } = req.body;
+  
+//       // Verify page exists
+//       const page = await Page.findById(pageId);
+//       if (!page) {
+//         return res.status(404).json({ message: 'Page not found' });
+//       }
+  
+//       const section = new Section({
+//         pageId,
+//         title,
+//         description,
+//         type
+//       });
+  
+//       const createdSection = await section.save();
+  
+//       res.status(201).json(createdSection);
+
+//     } catch (error) {
+//       res.status(500).json({ 
+//         message: 'Error creating section', 
+//         error: error.message 
+//       });
+//     }
+// });
+
+
 
 app.use('/api',saveCodeRoutes);
 app.use('/api',studentCodeRoutes);
