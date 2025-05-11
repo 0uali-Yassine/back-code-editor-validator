@@ -42,11 +42,10 @@ app.use('/api',authRoutes);
 app.use('/api/course',studentCourseRoutes);
 
 // save and check code
-
 app.use('/api',saveCheckCodeRoutes);
 
 //get all page,sections,thier code
-
+// GET /api/student-content
 
 
 // just create page 
@@ -70,7 +69,6 @@ app.use('/api',saveCheckCodeRoutes);
 // });
 
 // just create section 
-
 // app.post('/api/section',async (req, res) => {
 //     try {
 //       const { pageId, title, description, type } = req.body;
