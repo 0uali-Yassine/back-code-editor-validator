@@ -35,6 +35,8 @@ const saveCodeRoutes = require('./routes/save-code.routes');
 const studentCodeRoutes = require('./routes/student-code.routes');
 const studentCourseRoutes = require('./routes/student-course.routes');
 const saveCheckCodeRoutes = require('./routes/save-check-code.route');
+const studentContentRoutes = require('./routes/student-content.routes');
+
 const role = require('./middleware/role');
 
 app.use('/api', authRoutes);
@@ -93,43 +95,7 @@ app.use('/api', saveCheckCodeRoutes);
 // });
 
 // for now i have just one page
-app.get('/api/student-content', auth, role(['student']), async (req, res) => {
-    try {
-        const user = req.user.userId;
-        const pageId = '681fa4237c539c3f47380151'; // just for testing
-
-        const page = await Page.findById(pageId);
-        if (!page) return res.status(404).json({ message: 'Page not found' });
-
-        const sections = await Section.find({ pageId });
-        const userCode = await Code.find({ userId: user, pageId: pageId });
-
-        const sectionWithCode = sections
-            .filter(section => userCode.some(doc => doc.sectionId.toString() === section._id.toString()))
-            .map(section => {
-                const codeDoc = userCode.find(doc => doc.sectionId.toString() === section._id.toString());
-
-                return {
-                    _id: codeDoc._id,
-                    sectionId: section._id,
-                    pageId,
-                    code: codeDoc.code,
-                    isCorrect: codeDoc.isCorrect,
-                };
-            });
-
-        console.log(sectionWithCode);
-
-        return res.status(201).json({ page, sections, sectionWithCode });
-
-
-
-    } catch (error) {
-        console.error('Error fetching student content:', error);
-        res.status(500).json({ error: 'Failed to load content' });
-    }
-
-})
+app.use('/api',studentContentRoutes);
 
 
 
