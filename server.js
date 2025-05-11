@@ -36,13 +36,14 @@ const studentCodeRoutes = require('./routes/student-code.routes');
 const studentCourseRoutes = require('./routes/student-course.routes');
 const saveCheckCodeRoutes = require('./routes/save-check-code.route');
 const studentContentRoutes = require('./routes/student-content.routes');
+const managerRoutes = require('./routes/manager.routes');
 
-const role = require('./middleware/role');
 
 app.use('/api', authRoutes);
 
 // student-course
 app.use('/api/course', studentCourseRoutes);
+
 
 // save and check code
 app.use('/api', saveCheckCodeRoutes);
@@ -96,6 +97,8 @@ app.use('/api', saveCheckCodeRoutes);
 
 // for now i have just one page
 app.use('/api',studentContentRoutes);
+
+app.use('/api/manager',managerRoutes);
 
 
 
