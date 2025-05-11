@@ -17,10 +17,6 @@ const codeSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  isSubmit: {
-    type: Boolean,
-    default: false
-  },
   isCorrect: {
     type: String,
     enum: ['correct', 'incorrect', 'syntaxError', 'pending'],

@@ -34,13 +34,19 @@ const authRoutes = require('./routes/auth.routes');
 const saveCodeRoutes = require('./routes/save-code.routes');
 const studentCodeRoutes = require('./routes/student-code.routes');
 const studentCourseRoutes = require('./routes/student-course.routes');
+const saveCheckCodeRoutes = require('./routes/save-check-code.route');
 
 app.use('/api',authRoutes);
 
 // student-course
 app.use('/api/course',studentCourseRoutes);
 
+// save and check code
+
+app.use('/api',saveCheckCodeRoutes);
+
 //get all page,sections,thier code
+
 
 
 // just create page 
