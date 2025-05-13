@@ -14,6 +14,7 @@ const studentContent = async (req, res) => {
         const sections = await Section.find({ pageId });
         const userCode = await Code.find({ userId: user, pageId: pageId });
 
+        // filter sections that have code
         const sectionWithCode = sections
             .filter(section => userCode.some(doc => doc.sectionId.toString() === section._id.toString()))
             .map(section => {
@@ -30,7 +31,7 @@ const studentContent = async (req, res) => {
 
         console.log(sectionWithCode);
 
-        return res.status(201).json({ page, sections, sectionWithCode });
+        return res.status(201).json({ page, sections, sectionWithCode,userId:user });
 
 
     } catch (error) {
