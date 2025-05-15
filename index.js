@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
-// const connectDB = require("./config/db");
+const connectDB = require("./config/db");
 
 
 
@@ -27,10 +27,10 @@ app.use(cors({
 app.use(express.json());
 
 
-mongoose.connect('mongodb+srv://codecraftcademy:H7AtpHV67J2puxWq@code-editor-validator.pe9tdoa.mongodb.net/?retryWrites=true&w=majority&appName=code-editor-validator')
-    .then(() => console.log('mongodb Connected...'))
+// mongoose.connect('mongodb+srv://codecraftcademy:H7AtpHV67J2puxWq@code-editor-validator.pe9tdoa.mongodb.net/?retryWrites=true&w=majority&appName=code-editor-validator')
+//     .then(() => console.log('mongodb Connected...'))
 
-// connectDB();
+connectDB();
 
 
 
