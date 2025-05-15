@@ -21,7 +21,7 @@ const auth = require('./middleware/auth');
 const app = express();
 // app.use(cors());
 app.use(cors({
-    origin: 'http://localhost:3001',
+    origin: 'http://front-code-editor-validator-next-js.vercel.app',
     credentials: true // Important for cookies
 }));
 app.use(express.json());
