@@ -43,6 +43,7 @@ const Login = async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: '24h' }
 );
+  console.log(token);
   res.json({ token, user });
 }
 

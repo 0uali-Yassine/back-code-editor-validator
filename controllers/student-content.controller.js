@@ -29,7 +29,6 @@ const studentContent = async (req, res) => {
                 };
             });
 
-        console.log(sectionWithCode);
 
         return res.status(201).json({ page, sections, sectionWithCode,userId:user });
 

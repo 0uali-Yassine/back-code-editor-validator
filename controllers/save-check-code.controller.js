@@ -7,16 +7,39 @@ const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flas
 
 const saveAndCheckCode =  async (req, res) => {
     const { code, exercise, userId, pageId, sectionId} = req.body;
+    console.log(exercise);
+    console.log(code);
   
+    // const prompt = `
+    //   You are a coding mentor. Please check if the following code solves the following exercise:
+    //   Exercise: ${exercise}
+    //   Code: ${code}
+    //   Respond with only one of the following:
+    //   - CORRECT (if solution is 50% or more correct)
+    //   - INCORRECT (if it fails to meet the requirement)
+    //   - ERROR (if code has syntax or runtime errors)
+    // `;
+
     const prompt = `
-      You are a coding mentor. Please check if the following code solves the following exercise:
-      Exercise: ${exercise}
-      Code: ${code}
-      Respond with only one of the following:
-      - CORRECT (if solution is 50% or more correct)
-      - INCORRECT (if it fails to meet the requirement)
-      - ERROR (if code has syntax or runtime errors)
-    `;
+You are a strict Python code evaluator. Check if the following code fully and correctly solves the exercise below:
+
+Exercise:
+${exercise}
+
+Student Code:
+${code}
+
+Rules:
+- Only reply with EXACTLY one word: CORRECT, INCORRECT, or ERROR.
+- CORRECT: Only if the solution is 100% logically accurate and complete.
+- INCORRECT: If the logic is wrong, incomplete, or does not solve the problem correctly.
+- ERROR: If there is any syntax or runtime error in the code.
+
+Respond ONLY with one word: CORRECT, INCORRECT, or ERROR.
+`;
+  
+    
+
   
     const data = {
       contents: [{ parts: [{ text: prompt }] }]
@@ -29,13 +52,18 @@ const saveAndCheckCode =  async (req, res) => {
       });
   
       const feedback = response.data.candidates[0].content.parts[0].text.trim().toUpperCase();
-  
-      let isCorrect;
-      if (feedback.includes('CORRECT')) isCorrect = 'Correct';
-      else if (feedback.includes('INCORRECT')) isCorrect = 'Incorrect';
-      else if (feedback.includes('ERROR')) isCorrect = 'SyntaxError';
-      else isCorrect = 'pending'; // fallback
-  
+      console.log('feedback:', feedback);
+
+      const VALID_RESPONSES = {
+        CORRECT: 'Correct',
+        INCORRECT: 'Incorrect',
+        ERROR: 'SyntaxError'
+      };
+
+      const cleanFeedback = feedback.replace(/[\s\n]+/g, '');
+      const isCorrect = VALID_RESPONSES[cleanFeedback] || 'Unknown';
+      console.log('Evaluation result:', isCorrect);
+
       const savedCode = await Code.findOneAndUpdate(
           { userId, pageId, sectionId },
           {
@@ -51,6 +79,7 @@ const saveAndCheckCode =  async (req, res) => {
         );
   
       res.json({ message: 'Code saved and evaluated.', result: savedCode });
+      console.log(savedCode);
       
     } catch (error) {
       console.error('Code check failed:', error);
